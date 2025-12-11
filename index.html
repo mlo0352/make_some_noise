@@ -784,15 +784,8 @@
       display: none;
     }
 
-    .library-panel {
-      position: relative;
-    }
-
     .reset-floating {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 2;
+      margin-left: auto;
     }
 
     .toast {
@@ -855,16 +848,11 @@
       <section id="libraryPanel" class="card library-panel collapsed">
         <div class="card-inner">
           <div class="card-header">
-            <div>
-              <div class="card-title">Prompt Library</div>
-              <div class="card-subtitle">
-                Hidden by default so the crowd stays present. Pop it open when you need a backup.
-              </div>
-            </div>
+            <div class="card-title">Prompt Library</div>
+            <button id="resetUsedBtn" class="ghost small danger reset-floating" title="Clear used markers for this device" style="display:none;">
+              Reset Used
+            </button>
           </div>
-          <button id="resetUsedBtn" class="ghost small danger reset-floating" title="Clear used markers for this device" style="display:none;">
-            Reset Used
-          </button>
 
           <div class="stats-row library-stats" id="libraryStats" style="display:none;">
             <div class="pill">
