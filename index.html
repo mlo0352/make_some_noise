@@ -555,6 +555,7 @@
     button:hover {
       background: rgba(255, 255, 255, 0.12);
       box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3);
+      transform: none;
     }
 
     button.primary {
@@ -571,6 +572,11 @@
     button.ghost {
       background: rgba(255, 255, 255, 0.06);
       color: var(--text);
+    }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     button.danger {
@@ -590,23 +596,15 @@
     }
 
     main {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 16px;
-      align-items: start;
-    }
-
-    main.library-hidden {
-      grid-template-columns: 1fr;
-      justify-items: center;
     }
 
     @media (max-width: 960px) {
       body {
         padding: 14px;
-      }
-      main {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -643,11 +641,11 @@
       color: #0d0d0d;
       border: 1px solid var(--card-border);
       min-height: 320px;
-      max-width: 900px;
-      width: min(90vw, 900px);
+      max-width: 700px;
+      width: min(60vw, 700px);
       margin: 0 auto;
       box-shadow: var(--shadow-card);
-      padding: 26px 26px 22px;
+      padding: 26px 32px 22px;
     }
 
     .prompt-card .card-inner {
@@ -656,6 +654,25 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
+      position: relative;
+    }
+
+    .used-check {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e9f7ee;
+      border: 2px solid #1f7a45;
+      color: #14532d;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      box-shadow: 0 0 0 2px #f7f5f0;
     }
 
     .current-prompt-text {
@@ -667,27 +684,15 @@
       margin-bottom: 16px;
       min-height: 140px;
       text-align: center;
-    }
-
-    .current-prompt-meta {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
+      padding-top: 16px;
+      padding-right: 56px;
+      padding-left: 56px;
     }
 
     .tag {
       background: #2f2f2f;
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #f6f6f6;
-    }
-
-    .tag.used {
-      background: #e9f7ee;
-      color: #14532d;
-      border-color: rgba(20, 83, 45, 0.25);
     }
 
     .tag-hint {
@@ -706,20 +711,23 @@
 
     input[type="text"] {
       background: #1f1f1f;
-      color: var(--text);
+      color: #f7f5f0;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 10px;
       padding: 10px 12px 10px 28px;
       font-size: 0.92rem;
+      caret-color: var(--accent);
     }
 
     input[type="text"]::placeholder {
-      color: rgba(38, 32, 24, 0.45);
+      color: rgba(247, 245, 240, 0.55);
     }
 
     input[type="text"]:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px var(--accent-soft);
+      background: rgba(24, 26, 34, 0.96);
+      color: #f7f5f0;
     }
 
     .prompt-list {
@@ -776,16 +784,49 @@
       border-radius: 14px;
     }
 
-    .library-panel.collapsed .library-body {
-      display: none;
+    .library-panel {
+      position: fixed;
+      top: 110px;
+      right: 24px;
+      width: min(38vw, 420px);
+      max-height: calc(100vh - 150px);
+      overflow: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .library-panel .library-body {
+      max-height: calc(100vh - 230px);
+      overflow: auto;
     }
 
     .library-panel.collapsed {
-      display: none;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateX(16px);
+    }
+
+    .library-panel.collapsed .library-body,
+    .library-panel.collapsed .library-stats {
+      opacity: 0;
     }
 
     .reset-floating {
       margin-left: auto;
+    }
+
+    @media (max-width: 960px) {
+      .library-panel {
+        position: fixed;
+        top: 96px;
+        right: 10px;
+        width: 90vw;
+        max-height: calc(100vh - 120px);
+      }
+      .library-panel .library-body {
+        max-height: calc(100vh - 200px);
+      }
     }
 
     .toast {
@@ -828,19 +869,19 @@
       </div>
     </header>
 
-    <main class="library-hidden">
+    <main>
       <section class="card prompt-card">
         <div class="card-inner">
+          <div class="used-check" id="usedCheck">✓</div>
           <div class="current-prompt-text" id="currentPrompt"></div>
           <div id="startPromptOverlay">
             <button id="startSurpriseBtn" class="primary large">Surprise Me</button>
           </div>
-          <div class="current-prompt-meta" id="promptMeta">
-            <span class="tag used" id="usedTag" style="display:none;">Used</span>
-          </div>
+          <div class="current-prompt-meta" id="promptMeta"></div>
           <div class="prompt-actions" id="promptActions" style="display:none;">
             <button id="markUsedBtn" class="ghost small">Mark Used</button>
             <button id="surpriseInlineBtn" class="primary small">Surprise Me</button>
+            <button id="resetPromptBtn" class="ghost small">Reset</button>
           </div>
         </div>
       </section>
@@ -1640,7 +1681,7 @@
 
     const promptListEl = document.getElementById("promptList");
     const currentPromptEl = document.getElementById("currentPrompt");
-    const usedTagEl = document.getElementById("usedTag");
+    const usedCheckEl = document.getElementById("usedCheck");
     const searchInputEl = document.getElementById("searchInput");
     const hideUsedCheckbox = document.getElementById("hideUsedCheckbox");
     const emptyStateEl = document.getElementById("emptyState");
@@ -1648,12 +1689,12 @@
     const toastTextEl = document.getElementById("toastText");
     const copyBtn = document.getElementById("copyBtn");
     const markUsedBtn = document.getElementById("markUsedBtn");
+    const resetPromptBtn = document.getElementById("resetPromptBtn");
     const resetUsedBtn = document.getElementById("resetUsedBtn");
     const clearSearchBtn = document.getElementById("clearSearchBtn");
     const promptCountEl = document.getElementById("promptCount");
     const usedCountEl = document.getElementById("usedCount");
     const remainingCountEl = document.getElementById("remainingCount");
-    const mainEl = document.querySelector("main");
     const toggleLibraryBtn = document.getElementById("toggleLibraryBtn");
     const libraryPanel = document.getElementById("libraryPanel");
     const libraryBody = document.getElementById("libraryBody");
@@ -1716,9 +1757,6 @@
       if (toggleLibraryBtn) {
         toggleLibraryBtn.setAttribute("aria-expanded", String(open));
         toggleLibraryBtn.textContent = open ? "Hide Prompt List" : "Show Prompt List";
-      }
-      if (mainEl) {
-        mainEl.classList.toggle("library-hidden", !open);
       }
       if (libraryStats) {
         libraryStats.style.display = open ? "flex" : "none";
@@ -1832,10 +1870,11 @@
       hasStarted = true;
       currentIndex = idx;
       currentPromptEl.textContent = PROMPTS[idx];
-      usedTagEl.style.display = usedSet.has(idx) ? "inline-flex" : "none";
+      usedCheckEl.style.display = usedSet.has(idx) ? "flex" : "none";
       if (startPromptOverlay) startPromptOverlay.style.display = "none";
       if (promptActions) promptActions.style.display = "flex";
       if (surpriseInlineBtn) surpriseInlineBtn.focus({ preventScroll: true });
+      if (copyBtn) copyBtn.disabled = false;
 
       document.querySelectorAll(".prompt-item").forEach((li) => {
         if (Number(li.dataset.index) === idx) li.classList.add("active");
@@ -1844,8 +1883,17 @@
 
       if (opts.scrollIntoView) {
         const active = document.querySelector(`.prompt-item[data-index="${idx}"]`);
-        if (active) {
-          active.scrollIntoView({ block: "center", behavior: "smooth" });
+        const container = promptListEl;
+        if (active && container) {
+          const itemTop = active.offsetTop;
+          const itemBottom = itemTop + active.offsetHeight;
+          const viewTop = container.scrollTop;
+          const viewBottom = viewTop + container.clientHeight;
+          if (itemTop < viewTop) {
+            container.scrollTop = itemTop;
+          } else if (itemBottom > viewBottom) {
+            container.scrollTop = itemBottom - container.clientHeight;
+          }
         }
       }
 
@@ -1955,12 +2003,22 @@
       showToast("Used markers cleared for this device");
     }
 
+    function resetPromptView() {
+      currentIndex = null;
+      currentPromptEl.textContent = "";
+      usedCheckEl.style.display = "none";
+      if (promptActions) promptActions.style.display = "none";
+      if (startPromptOverlay) startPromptOverlay.style.display = "flex";
+      copyBtn.disabled = true;
+    }
+
     function init() {
       loadUsed();
       updateStats();
       renderList();
       setLibraryOpen(false);
       updateFullscreenLabel();
+      if (copyBtn) copyBtn.disabled = true;
 
       promptCountEl.textContent = PROMPTS.length;
       if (startSurpriseBtn) {
@@ -1968,6 +2026,9 @@
       }
       if (surpriseInlineBtn) {
         surpriseInlineBtn.addEventListener("click", pickRandomPrompt);
+      }
+      if (resetPromptBtn) {
+        resetPromptBtn.addEventListener("click", resetPromptView);
       }
 
       copyBtn.addEventListener("click", copyCurrentPrompt);
