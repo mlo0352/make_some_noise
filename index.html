@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>House Party Improv Prompts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #1c1c1c;
+      --bg-elevated: #242424;
+      --accent: #f36a3d;
+      --accent-soft: rgba(243, 106, 61, 0.16);
+      --accent-strong: rgba(243, 106, 61, 0.24);
+      --text: #f5f5f5;
+      --text-muted: #c5c5c5;
+      --danger: #e2574c;
+      --used-pill: rgba(111, 207, 151, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --radius-lg: 16px;
+      --radius-sm: 999px;
+      --shadow-soft: 0 24px 64px rgba(0, 0, 0, 0.36);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1220, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 16px;
+    }
+
+    .app-shell {
+      max-width: 1120px;
+      width: 100%;
+      background: linear-gradient(145deg, #020617, #020617, #020617);
+      border-radius: 24px;
+      padding: 18px 20px 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      font-family: "Poppins", "Nunito", "Inter", sans-serif;
+    }
+
+    h1 span.badge {
+      display: none;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .top-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      transition: background 0.12s ease, transform 0.12s ease,
+        box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      border-color: transparent;
+      color: #0b1120;
+      box-shadow: 0 12px 24px rgba(56, 189, 248, 0.4);
+    }
+
+    button.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(56, 189, 248, 0.5);
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+    }
+
+    button:hover {
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    button.ghost {
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    button.small {
+      padding: 4px 10px;
+      font-size: 0.7rem;
+    }
+
+    button.danger {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 2.2fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 840px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #0b1220, #020617);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background: radial-gradient(
+        circle at top,
+        rgba(56, 189, 248, 0.12),
+        transparent 60%
+      );
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+    }
+
+    .card-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .current-prompt-text {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      min-height: 80px;
+    }
+
+    .current-prompt-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      padding: 2px 9px;
+      border-radius: var(--radius-sm);
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tag.used {
+      border-color: rgba(34, 197, 94, 0.6);
+      background: rgba(22, 163, 74, 0.08);
+      color: #bbf7d0;
+    }
+
+    .tag-hint {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .checkbox-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-input-wrapper span.icon {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 7px 8px 7px 24px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text);
+      font-size: 0.8rem;
+      outline: none;
+      transition: border-color 0.1s ease, box-shadow 0.1s ease,
+        background 0.1s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .prompt-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-height: 320px;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      background: radial-gradient(circle at top left, #020617, #020617);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .prompt-item {
+      padding: 7px 9px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.8);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      background: transparent;
+      transition: background 0.08s ease;
+    }
+
+    .prompt-item:last-child {
+      border-bottom: none;
+    }
+
+    .prompt-item:hover {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .prompt-item.active {
+      background: var(--accent-strong);
+    }
+
+    .prompt-item-index {
+      min-width: 22px;
+      text-align: right;
+      color: var(--text-muted);
+      opacity: 0.8;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .prompt-item-text {
+      flex: 1;
+    }
+
+    .prompt-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .prompt-item-used {
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+      background: rgba(22, 163, 74, 0.1);
+      font-size: 0.65rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 18px 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text);
+      font-size: 0.75rem;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.9);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast span {
+      margin-right: 6px;
+    }
+
+    footer {
+      margin-top: 2px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .hint-keys {
+      opacity: 0.8;
+    }
+
+    .hint-keys code {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 2px 7px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.68rem;
+    }
+
+    /* Poster wall refresh */
+    :root {
+      --bg: #151820;
+      --bg-2: #14131b;
+      --bg-elevated: rgba(24, 26, 34, 0.9);
+      --card: #f7f5f0;
+      --card-border: rgba(0, 0, 0, 0.06);
+      --accent: #ffb347;
+      --accent-soft: rgba(255, 179, 71, 0.2);
+      --accent-strong: rgba(255, 179, 71, 0.3);
+      --text: #f7f5f0;
+      --text-muted: #c3c0b8;
+      --danger: #ff6f61;
+      --used-pill: rgba(111, 207, 151, 0.12);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 26px 70px rgba(0, 0, 0, 0.45);
+      --shadow-card: 0 18px 46px rgba(0, 0, 0, 0.38);
+    }
+
+    body {
+      background: radial-gradient(circle at 18% 10%, rgba(255, 111, 97, 0.08), transparent 26%),
+        radial-gradient(circle at 82% 20%, rgba(255, 179, 71, 0.08), transparent 24%),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      max-width: 1180px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      gap: 10px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--text);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 1.35rem;
+    }
+
+    h1 span.badge {
+      background: var(--accent-soft);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .subtitle-tip {
+      color: #9f9a8e;
+      font-size: 0.9rem;
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .pill {
+      background: #1f1f1f;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+      color: var(--text);
+      padding: 4px 12px;
+      border-radius: 10px;
+    }
+
+    .pill-used,
+    .pill-remaining {
+      background: #1f1f1f;
+    }
+
+    .top-controls {
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+      font-weight: 700;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, #ffb347, #f9a826);
+      color: #1a1208;
+      box-shadow: 0 14px 32px rgba(255, 179, 71, 0.35);
+      border: none;
+    }
+
+    button.primary:hover {
+      background: linear-gradient(135deg, #f9a826, #ffb347);
+    }
+
+    button.ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    button.danger {
+      color: #ffb3ad;
+      border-color: rgba(255, 111, 97, 0.5);
+    }
+
+    .prompt-card .ghost {
+      background: #f0ede6;
+      color: #2a241e;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .prompt-card .ghost:hover {
+      background: #e9e5dc;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    main.library-hidden {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+
+    @media (max-width: 960px) {
+      body {
+        padding: 14px;
+      }
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card::before {
+      display: none;
+    }
+
+    .card-title {
+      color: #f7f5f0;
+      letter-spacing: 0.08em;
+      text-transform: none;
+      font-weight: 700;
+    }
+
+    .card-title span.dot {
+      background: var(--accent);
+      box-shadow: none;
+    }
+
+    .card-subtitle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .prompt-card {
+      background: var(--card);
+      color: #0d0d0d;
+      border: 1px solid var(--card-border);
+      min-height: 320px;
+      max-width: 900px;
+      width: min(90vw, 900px);
+      margin: 0 auto;
+      box-shadow: var(--shadow-card);
+      padding: 26px 26px 22px;
+    }
+
+    .prompt-card .card-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .current-prompt-text {
+      font-family: "Impact", "Arial Black", "Franklin Gothic Heavy", "Segoe UI", sans-serif;
+      font-size: 1.9rem;
+      line-height: 1.25;
+      color: #0d0d0d;
+      letter-spacing: 0.01em;
+      margin-bottom: 16px;
+      min-height: 140px;
+      text-align: center;
+    }
+
+    .current-prompt-meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tag {
+      background: #2f2f2f;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f6f6f6;
+    }
+
+    .tag.used {
+      background: #e9f7ee;
+      color: #14532d;
+      border-color: rgba(20, 83, 45, 0.25);
+    }
+
+    .tag-hint {
+      color: var(--text-muted);
+    }
+
+    .search-wrapper {
+      align-items: stretch;
+    }
+
+    .search-input-wrapper span.icon {
+      left: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    input[type="text"] {
+      background: #1f1f1f;
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 12px 10px 28px;
+      font-size: 0.92rem;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(38, 32, 24, 0.45);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .prompt-list {
+      max-height: 360px;
+      background: #1f1f1f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+    }
+
+    .prompt-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: transparent;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      color: var(--text);
+    }
+
+    .prompt-item:hover {
+      background: rgba(255, 179, 71, 0.06);
+    }
+
+    .prompt-item.active {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+    }
+
+    .prompt-item-index {
+      color: #7a6f63;
+    }
+
+    .prompt-item-used {
+      background: #e9f7ee;
+      border-color: rgba(20, 83, 45, 0.4);
+      color: #14532d;
+    }
+
+    .prompt-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content: center;
+    }
+
+    #startPromptOverlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button.large {
+      padding: 14px 18px;
+      font-size: 1rem;
+      border-radius: 14px;
+    }
+
+    .library-panel.collapsed .library-body {
+      display: none;
+    }
+
+    .library-panel.collapsed {
+      display: none;
+    }
+
+    .library-panel {
+      position: relative;
+    }
+
+    .reset-floating {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+    }
+
+    .toast {
+      background: #0f0f0f;
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.22);
+    }
+
+    footer {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .hint-keys code {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      color: #0f0f0f;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="title-block">
+        <h1>
+          Make Some Noise
+        </h1>
+        <div class="top-controls">
+          <button id="copyBtn" class="ghost small">
+            Copy
+          </button>
+          <button id="fullscreenBtn" class="ghost small" title="Fill the projector screen">
+            Fullscreen
+          </button>
+          <button id="toggleLibraryBtn" class="ghost small" aria-expanded="false">
+            Show Prompt List
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="library-hidden">
+      <section class="card prompt-card">
+        <div class="card-inner">
+          <div class="current-prompt-text" id="currentPrompt"></div>
+          <div id="startPromptOverlay">
+            <button id="startSurpriseBtn" class="primary large">Surprise Me</button>
+          </div>
+          <div class="current-prompt-meta" id="promptMeta">
+            <span class="tag used" id="usedTag" style="display:none;">Used</span>
+          </div>
+          <div class="prompt-actions" id="promptActions" style="display:none;">
+            <button id="markUsedBtn" class="ghost small">Mark Used</button>
+            <button id="surpriseInlineBtn" class="primary small">Surprise Me</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="libraryPanel" class="card library-panel collapsed">
+        <div class="card-inner">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Prompt Library</div>
+              <div class="card-subtitle">
+                Hidden by default so the crowd stays present. Pop it open when you need a backup.
+              </div>
+            </div>
+          </div>
+          <button id="resetUsedBtn" class="ghost small danger reset-floating" title="Clear used markers for this device" style="display:none;">
+            Reset Used
+          </button>
+
+          <div class="stats-row library-stats" id="libraryStats" style="display:none;">
+            <div class="pill">
+              <span><span id="promptCount">0</span> loaded</span>
+            </div>
+            <div class="pill pill-used">
+              <span><span id="usedCount">0</span> used</span>
+            </div>
+            <div class="pill pill-remaining">
+              <span><span id="remainingCount">0</span> remaining</span>
+            </div>
+          </div>
+
+          <div class="library-body" id="libraryBody">
+            <div class="controls-row">
+              <div class="search-wrapper">
+                <div class="search-input-wrapper">
+                  <span class="icon">/</span>
+                  <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search for names, shows, animals..."
+                    autocomplete="off"
+                  />
+                </div>
+                <button id="clearSearchBtn" class="ghost small">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="controls-row" style="justify-content: space-between;">
+              <div class="checkbox-row">
+                <input type="checkbox" id="hideUsedCheckbox" />
+                <label for="hideUsedCheckbox">Hide used prompts</label>
+              </div>
+              <div class="tag-hint">Click a prompt to throw it on the wall.</div>
+            </div>
+
+            <ul id="promptList" class="prompt-list">
+              <!-- populated by JS -->
+            </ul>
+
+            <div id="emptyState" class="empty-state" style="display:none;">
+              No prompts match that search (and hide-used filter). Try fewer
+              words or uncheck "Hide used".
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="hint-keys">
+        <strong>Keyboard:</strong>
+        <code>Space</code> = Surprise Me |
+        <code>Enter</code> in search = random match |
+        <code>L</code> = toggle list |
+        <code>F</code> = fullscreen |
+        <code>Esc</code> = clear search
+      </div>
+      <div class="hint-keys">
+        Session data (used prompts) is stored locally in your browser only.
+      </div>
+    </footer>
+
+    <div id="toast" class="toast">
+      <span>!</span><span id="toastText"></span>
+    </div>
+  </div>
+
+  <script>
+    const PROMPTS = [
+      `Batman doing a cameo`,
+      `A sommelier who's never tasted wine`,
+      `An old-timey prospector who is getting into crypto`,
+      `An assassin assembling the world’s most intricate sniper rifle`,
+      `That guy in the movie who’s definitely about to be hit by a bus`,
+      `A carnival barker for the free section of Craigslist`,
+      `Jason Bateman giving an inspiring locker room speech`,
+      `A drive-thru order from the restaurant “Leftovers”`,
+      `A monologue from HBO’s “Game of Rock Paper Scissors”`,
+      `Slimer tries to convince the Genius Bar his phone wasn’t slimed`,
+      `An obviously stolen item at Antiques Roadshow`,
+      `The mushrooms hit Samwise and Frodo at the same time`,
+      `An astronaut trying to cover up to NASA that they really messed up`,
+      `Two sea captains competing for who loves the sea more`,
+      `A scene from a nixed version of Castaway in which Wilson was a talking animated volleyball`,
+      `Friends who don’t know how to count on New Year’s Eve`,
+      `From the CD “Sounds to Help You Sleep”: Jungle noises, plus Steve who got lost`,
+      `Guys on the Titanic pumped for bro time now that the women and children are gone`,
+      `A lounge singer’s patter before a royalty-free song`,
+      `A best man speech in which the subtext is that he and the groom were abducted by aliens`,
+      `Slowly turning into an Animal Crossing character`,
+      `A Confederate soldier’s letter home in which he’s subtly trying to start a sexting thing`,
+      `A referee calling party fouls`,
+      `Your annoyingly complicated Starbucks “secret menu” order`,
+      `An ad for the new McDonald’s sandwich: The Macbeth`,
+      `The TV premiere of an R-rated movie in which the curses have been replaced by weird words`,
+      `One of those beekeeper TikTok narrations, but they got stung a lot of times`,
+      `Shakespeare’s “Dude, Where’s My Car?”`,
+      `A kernel of popcorn gives its unpopped child “the talk”`,
+      `One of these two is definitely wearing a wire`,
+      `Two kraken trainers at SeaWorld show off their work with the krakens`,
+      `Two athletes in a decathlon having just finished the marathon portion and beginning the hot dog eating portion`,
+      `Two of those people who always make conversation on planes`,
+      `A rendition of “Row, Row, Row Your Boat” in which the third singer is clearly trying to amp things up a bit`,
+      `Throuple’s therapy`,
+      `An improv group has a bunch of stipulations for the one-word suggestion`,
+      `Anna Faris as Dorothy in “The Wizard of Oz”`,
+      `Jimmy Kimmel the court jester is definitely going to be beheaded by the king after this set`,
+      `Jennifer Coolidge the air traffic controller`,
+      `Don Draper pitching “Trix are for kids”`,
+      `Izzy, Allie, and Erin argue about who would actually win on Survivor`,
+      `Someone who keeps trying and failing to start chants in the middle of the speech`,
+      `A meet-cute where what they ran into each other and dropped is actually important and should be the focus of their attention`,
+      `A scene from the British drama, “This Airbnb Sure Has a Lot of Cutting Boards”`,
+      `Nick Offerman directing all the animals onto Noah’s Ark`,
+      `Two of the girls from Euphoria selling you Girl Scout cookies`,
+      `Downton Abbey sisters debate who shat in the hallway`,
+      `A CPR video in which they keep accusing the viewer of being a pervert`,
+      `A voice-disguised witness in a true crime doc accidentally reveals exactly who they are`,
+      `A child brings a magical snowman to life who is very concerned about dying again`,
+      `Fred Armisen and Kristen Wiig are the newest additions to the Marvel Cinematic Universe`,
+      `Three aging camp counselors trying to squeeze all of the slang they can into their welcome-back spiel`,
+      `A video game NPC’s annoying side quest`,
+      `A scientist describing how the world is going to end only using the contents of a BarkBox`,
+      `The moment in the show where the lore goes so deep they lose you`,
+      `The long-awaited meeting between Times New Roman and Comic Sans`,
+      `Messages on Sam’s answering machine`,
+      `A school paper and the plagiarized version of that paper with only a few words changed`,
+      `George Lopez and Phoebe Waller-Bridge are your new hosts of Good Morning America`,
+      `Vince Vaughn and Zooey Deschanel’s chemistry read for “A Marriage Story”`,
+      `Things yelled from a dugout by baseball players who don’t know anything about baseball`,
+      `Three Gilbert Gottfrieds at Gilbert Gottfried-palooza`,
+      `An echo that mocks you a little bit`,
+      `A documentarian who’s bad at asking relevant follow-up questions`,
+      `In an alternate universe, Mark Zuckerberg produces a local ad for his waterpark, “The Wet-a-verse”`,
+      `Announcing Thanksgiving Day parade floats but the mushrooms are kicking in`,
+      `A 1930’s femme fatale hiring a PI to investigate the death of their husband (who definitely murdered their husband)`,
+      `A superhero suit-up montage`,
+      `Foley artists for the movie “A Bathtub Falls Through Ten Floors of a Rotting House”`,
+      `Turns out the hostage negotiator knows the hostage taker from way back`,
+      `A time traveler trying to figure out what year it is without drawing too much attention to themselves`,
+      `Two nerdy teens trade senator cards`,
+      `“America’s Got Talent” judges judging the craziest act they’ve ever seen`,
+      `The Exorcist but they hired a magician instead of a priest`,
+      `Ellen DeGeneres in “Jaws” talking about how she got that scar`,
+      `Drew Barrymore casually asking the ghosts in her house to leave`,
+      `Things Jimmy Stewart would give Mary in addition to the moon`,
+      `Someone currently being burned ASMR`,
+      `Two big mouth bass programmed to “read” each other`,
+      `Maybe it wasn’t the best idea to break up in massage chairs`,
+      `A woman in Hell wants to speak to the manager`,
+      `The activities team for a cruise that’s just sailed into the River Styx`,
+      `The person with one line in the play somehow manages to mess it up`,
+      `An adult from Peanuts having phone sex`,
+      `A nude model can’t help but talk to the class about their scars`,
+      `A post-game interview with the player who came on, threw up, passed out, and was carried away`,
+      `A home remodeling show in which they’ve just put giant boulders in every room`,
+      `Explaining the rules to the board game Sisyphus’ Boulder`,
+      `Nike’s newest line: The Gaslighter`,
+      `An audition scene between an experienced performer and a terrible casting assistant`,
+      `Three mafiosos: Mr. Nice, Mr. Mean, and Mr. In-Between`,
+      `Internet comments that people think are nice but aren’t`,
+      `Your friend’s mom who was nice to you but mean to your friend in front of you`,
+      `An opera singer hits a note so high they cum`,
+      `One of those bowling animations`,
+      `Mario walking on hot coals`,
+      `Lisa Simpson accuses you of cheating at Monopoly`,
+      `A pilot pointing out landmarks, but it’s a little worrying how he’s going on about our relative insignificance`,
+      `What trees are saying to each other through their root systems`,
+      `Dueling anime characters over-explaining every move`,
+      `Seth Rogen hosting Cosmos`,
+      `Mummies in the heat of the moment unravelling each other’s clothes`,
+      `A grizzled war vet recounts a Black Friday sale event`,
+      `Two astronauts compete for the quote that will go down in history`,
+      `Christoph Waltz threateningly offers to shovel your driveway`,
+      `Wizards trying to one-up each other with cryptic last words`,
+      `A villain and their real estate agent tour volcano lairs`,
+      `The more tools a surgeon asks for, the clearer it is they’re winging it`,
+      `The Great British Baking Show’s judges going down the line on a technical challenge`,
+      `Paparazzi for a middle school English teacher`,
+      `Thomas Jefferson getting notes from his Hollywood agent on the Declaration of Independence`,
+      `A Shark Tank presentation where the presenters all have food poisoning from their own product`,
+      `Two Saturday morning cartoon VO artists who, looking at their faces, you can tell are completely over it, but listening to their voices, you would never know`,
+      `Two sperm trying to stay casual about competing for the egg`,
+      `Emma Stone hazes new pledges at a fraternity`,
+      `The guy from Operation trying to hook up with someone`,
+      `Evil lunch ladies hint at what’s in the sloppy joes`,
+      `Construction workers catcall passersby with their deep-down emotional needs`,
+      `Owen Wilson and his magic mirror`,
+      `A morning zoo host forgets what the buttons on his soundboard do`,
+      `Maybe Sarah Silverman was a bad choice to hype up this cavalry`,
+      `A palm reader trying to sugarcoat very bad news`,
+      `Braggadocious cavemen tool-dropping`,
+      `A dialect coach and the star of the movie “Bad British Accent”`,
+      `A scene between two actors where they clearly ADR’d one of them`,
+      `A third grader got a hold of the script for this medical drama and changed some words a la Mad Libs`,
+      `Questions and comments your relatives have about your career`,
+      `Your great aunt has something to say about everything in your junk drawer`,
+      `The Germaphobe’s Association’s secret handshake`,
+      `Vic’s press secretary discussing their agenda`,
+      `What kids think happens in the teachers’ lounge`,
+      `Brennan’s Wario, Wennan Wee Wulligan`,
+      `The cut “Plunger’s Song” from Beauty & the Beast`,
+      `A scene from David Mamet’s workplace drama “Build-a-Bear-y Glenn Ross”`,
+      `Questions your little sibling insists on asking you before you fall asleep`,
+      `A Venetian gondolier’s song is clearly just for tips`,
+      `Two reindeer quietly trash-talking Santa`,
+      `The toxic ballet teacher’s students’ final performance`,
+      `A dog show announcer who's clearly sexually attracted to one of the breeds`,
+      `A couple one week from breaking up goes grocery shopping`,
+      `A YouTuber doing a CTA but you can tell she’s barely keeping it together emotionally`,
+      `Britney Spears’s newest single: “This Is 40”`,
+      `A genie’s other stipulations`,
+      `A dramatic video game cut scene transitions awkwardly into the gameplay`,
+      `White water rapid tour guides prepare their group for the Bermuda Triangle`,
+      `The kid you’re babysitting doesn’t want you to see what happened in the other room`,
+      `Two flight attendants prepare their passengers for any scenario possible`,
+      `A conversation with your Uber driver gets real deep real fast`,
+      `Someone casually trying to sneak all the state birds they know into conversation`,
+      `A minivan-to-Long Island mom transformer`,
+      `Two sides of a pistachio shell fighting being pulled apart to protect the pistachio`,
+      `One half of this couple put a lot more work into writing their wedding vows than the other`,
+      `Ghost of St. Patrick’s Day’s past`,
+      `A toxic ballet teacher goes over the choreography impatiently`,
+      `The first person to discover you can drink cow’s milk`,
+      `Meryl Streep sells vacuums door-to-door`,
+      `The last will and testament of the founder of Spencer’s Gifts`,
+      `If the Harry Potter Sorting Hat were a mean girl`,
+      `An ad for Taco Bell’s new Laxative Supreme`,
+      `Good Cop/Rad Cop`,
+      `A billionaire and his little piss boy translator`,
+      `The evolution of man diagram`,
+      `Christmas elves’ strike chants`,
+      `A dying person’s last words, but they realize they have a little more life in them so they have to vamp`,
+      `A monster truck voiceover for a peaceful Sunday`,
+      `A boxing coach gives bad advice between rounds`,
+      `Tennis match grunts get out of hand`,
+      `Two NYC-ers who were born in NYC, raised in NYC, and have never left NYC, bump into each other on the sidewalks of NYC`,
+      `Those trick-or-treaters who are way too old to be trick-or-treating`,
+      `Three sports announcers doing a play-by-play of each other`,
+      `A quirky educational theater troupe teaches you a bittersweet life lesson`,
+      `The sign-off credits of a podcast with too much staff`,
+      `A surfer, using a bunch of surfing lingo, recollects his gnarliest ride`,
+      `A clown-phobic clown puts on clown makeup`,
+      `A pencil sharpener that gets off on being fed pencils`,
+      `Someone called upon to say grace who doesn’t know how to say grace`,
+      `A gym coach substitute teaches art class`,
+      `A clickbait newsie`,
+      `Tourists in Hawaii enjoying the novelty of being melted by lava`,
+      `Olympic swimmers talk trash between strokes`,
+      `A werewolf who only turns into a wolf when their account is overdrawn`,
+      `How every yo-yo-er fantasizes the world will one day depend on their skillset`,
+      `A pre-show theater announcement where they might be taking the audience hostage`,
+      `The “Down with the Sickness” ooh wa ah ah ah guy’s alts`,
+      `One guard always lies & one guard always tells the truth`,
+      `A heroic Snickers snags in the vending machine—refusing to let his brothers above him fall`,
+      `Convincing the HR guy to come back for one last heist`,
+      `Brennan & Ross can't repeat an accent for more than one line`,
+      `A cinephile keeps interrupting the movie to inform his seat neighbor of trivia`,
+      `Grave robbers digging for an epic graphic tee`,
+      `The signing of the Declaration of Co-Dependence`,
+      `The problem player at every D&D table`,
+      `Just a complicated country lawyer`,
+      `An LA tour guide won't shut up about his other hometown`,
+      `Shakespeare’s ‘Two Gentlemen of Coronavirus’`,
+      `A smart toothbrush is too smart`,
+      `A dinner guest hams up loving food they hate`,
+      `The board debates late-stage capitalism`,
+      `David Attenborough fucking hates toads`,
+      `A Mario Kart mechanic`,
+      `Three active listeners struggle to make conversation`,
+      `The cast of a sitcom introduces a very special episode`,
+      `The subscription services you forgot to cancel toast the New Year`,
+      `A backwoods moonshine sommelier`,
+      `A Beastie Boy overdubbing just the last words in`,
+      `Two two-kids-in-a-trenchcoat on a date`,
+      `Two car mechanics’ long metaphor for what’s wrong with your car`,
+      `The Knights of the Standing Desk`,
+      `Scrappy orphans who always seem like they’re about to burst into song`,
+      `Joey Chestnut’s stomach writing him an open letter`,
+      `Someone named “Joshua Tree” every time he has to introduce himself`,
+      `Stage parents whispering direction from the audience`,
+      `Polite castaways debate who's going to eat each other`,
+      `Two birds in heated disagreement`,
+      `Doomsday device customer service hotline`,
+      `HAL 9000 apologizes for other things`,
+      `The lore-building video for a theme park ride`,
+      `An excuse for being three hours late, two inches taller & a shade greener`,
+      `Sam’s inner monologue when he wakes up in the middle of a crisis`,
+      `Someone trying to get a new nickname for themselves off the ground`,
+      `Hour 12 of a press junket for ‘Make Some Noise’`,
+      `Terrified but trying to look cool while skydiving`,
+      `An orgasmic “GOAAAAAL!”`,
+      `A difficult-to-open jar of pickles makes two men question everything`,
+      `A series of unfortunate events while we’re rolling on room tone`,
+      `Asteroid-denying dinosaurs’ podcast`,
+      `An animal expert explains a monkey’s unusual behavior`,
+      `A dancing crossing guard is bad at the crossing guard part`,
+      `Your dad teaches you about the birds & the bees (& the fire & the sword & the spell & the prophecy)`,
+      `Jigsaw from ‘Saw’ forgot to prepare anything & has to wing it`,
+      `Good cop / comrade cop`,
+      `5 different “hell yeahs” & their contexts`,
+      `Briefcase full of Seinfeld intro music`,
+      `What not to do if you see a rattlesnake`,
+      `Comedy Central's roast of an ostrich`,
+      `Fred Schneider of the B-52’s is going to find and kill you`,
+      `100,000 Batmans`,
+      `A figure skating fail & the slow-mo instant replay of the same fail`,
+      `Two Oscar presenters feel snubbed for the award they’re presenting`,
+      `A heist team realizes they all have the same specialty`,
+      `Three poker players with terrible tells`,
+      `In lieu of white noise: ‘Caucasian noise’`,
+      `A college tour that makes you second-guess coming here`,
+      `Good cop / dad cop`,
+      `Fast & the Furious 67: Too Fast, Slow Down`,
+      `These ‘Family Feud’ rapid-fire answers are way off`,
+      `Bigfoot Zoom interviews for a job he thought was remote but turns out is in-office`,
+      `Just the worst explanation of daylight savings`,
+      `The speech MLK really wanted to give instead of ‘I Have a Dream’`,
+      `Announcing tonight’s performance of ‘Hamilton’ has been canceled`,
+      `A survivalist is a little too eager to drink their own piss`,
+      `The part of the Oscars where they show a clip from each movie & then cut to that actor`,
+      `One of those very disturbing ‘children's’ videos on YouTube`,
+      `An alternate universe where the only difference is that the word for ‘money’ is ‘poopoopeepee’`,
+      `Your Peloton instructor is keeping you motivated with blackmail`,
+      `Deep in the pleasure of a scalp massage`,
+      `Adam and Eve broach an open relationship`,
+      `Pro models’ couples posing tutorial`,
+      `This Airbnb owner sure is hanging out for a while`,
+      `Politely asking the deli guy—‘Mr. Mayonnaise’—for no mayo`,
+      `Maybe it was a bad idea to break up on a rollercoaster`,
+      `Marvel announces Phase 51’s ‘All Raisin Man’`,
+      `A ‘Top Chef’ contestant shows off his disastrous dish to the judges`,
+      `A true crime podcast about the Hamburglar`,
+      `Woodshop kids weirdly competitive about their spoons`,
+      `An evil laugh turned asthma attack`,
+      `‘Hi-yah’ for every Taekwondo belt`,
+      `Runner-up in the 2023 Air Guitar Championships`,
+      `Winner of the 2023 Air Guitar Championships`,
+      `A person in line at the buffet feels the need to make a little comment about every dish`,
+      `Catty teens roast Sam’s outfit`,
+      `Italian mobsters try to out-order each other at dinner`,
+      `One friend is taking the birthday song way too seriously`,
+      `Two indoor cats & the outdoor cat they despise`,
+      `An election reporter without any touchscreen finesse`,
+      `Jack builds up the courage to ask Rose if they can share the door`,
+      `A witness interviewed by the local news tries way too hard to get autotuned`,
+      `This couple's shortlist of baby names is batshit`,
+      `This theater piece sure does involve a man pausing the scene and talking to the audience`,
+      `A “Let’s make kids” speech about yourself`,
+      `A track announcer who's clearly attracted to one of the horses`,
+      `The Terminator’s batteries are dying`,
+      `An indecisive person orders a dozen donuts`,
+      `Your therapist: an aunt drunk on white wine at a wedding`,
+      `Daily Planet coworkers won't let Clark Kent leave during a disaster`,
+      `A flock of birds flies into a plane engine`,
+      `A barista lists off the 11 kinds of milk you can get`,
+      `This dodgeball coach is a little too hard on the kids`,
+      `Winning an embarrassing amount of tickets at an arcade`,
+      `Toxic cheer coaches give a "pep talk"`,
+      `A hardboiled detective and femme fatale decide what to watch on Netflix`,
+      `A 1930s movie musical in which they dubbed over the singing`,
+      `The president’s war room decides what to order for dinner`,
+      `Two firefighters with wildly different approaches`,
+      `Abstinence-only youth group leaders who have definitely had sex with each other`,
+      `A finance bro in a British period romance`,
+      `Cops doing forensics after an "Oops All Berries" incident at the cereal factory`,
+      `A "Chef's Table" chef describes their pretentious dish`,
+      `The most annoying person on the lifeboat`,
+      `A witness on the local news wants you to know she can do Tae Kwon Do`,
+      `That one friend who takes karaoke too seriously`,
+      `A contentious note in an apartment building`,
+      `An old-timey phonograph tries to stay relevant`,
+      `A bouncer on Noah’s Ark`,
+      `Thinking every restaurant has a secret menu`,
+      `Counting down as the anesthesia kicks in`,
+      `A meteorologist doesn't know the names of weather phenomena`,
+      `Busy cowboys try to schedule a gunfight`,
+      `A middle school slam poetry champ`,
+      `The most agreeable man in the world gets punched in the belly`,
+      `Joyless wooden Soviet toys come to life like in "Toy Story"`,
+      `These square dance instructions are a little troubling`,
+      `The moment it occurs to you your friends want to swing`,
+      `The Tooth Fairy tries to sell teeth at a profit`,
+      `One-upping the person in front of you's grief at the casket`,
+      `A robot cheating in a CAPTCHA test`,
+      `It’s unclear if your neighbors are swingers or cannibals`,
+      `Two nerdy teens trade bird cards`,
+      `A scene from George R.R. Martin’s yet-to-be-adapted "A Bucket of Piss & Shit"`,
+      `Gods debating what to watch on Godflix`,
+      `Both sides of a dolphin argument`,
+      `The Wicked Switch of the West`,
+      `Oedipus’s mom grounds him for killing his dad`,
+      `Senior superlatives for your fellow cast`,
+      `Naming all 50 states while masking your disdain for certain ones`,
+      `If men called each other "Daddy" instead of "Dude"`,
+      `Sauron but it’s Donald Trump`,
+      `A job interview with the same arc as "Game of Thrones"`,
+      `Good Cop / Dryad Cop`,
+      `"The Great Gnomish Baking Show"`,
+      `Five different types of VO death scream`,
+      `Why this version of "Jurassic Park" is going to work`,
+      `Another lesser-known entrance to Narnia`,
+      `A voice you can't take seriously delivers a pivotal monologue`,
+      `The leader of a cult tries to return some robes`,
+      `The one Jew in Whoville`,
+      `A DM dramatically misreads a dice roll`,
+      `A doorbell song is way too long`,
+      `Shoveling snow in a snowglobe`,
+      `Going too hard with a massage gun`,
+      `Five sneezes: each a little worse than the one before`,
+      `A teenage kangaroo who refuses to leave the pouch`,
+      `How not to survive a bear encounter`,
+      `A couple of boring-ass white people from work`,
+      `The Joker tells us how he got this tuna salad recipe`,
+      `Wanda (the daughter Dave Thomas didn’t name a restaurant after)`,
+      `A wedding’s worst man speech`,
+      `Stoner characters written by someone who's never done drugs`,
+      `What is Robin Williams even talking about?`,
+      `Will Ferrell & Zooey Deschanel in "The Fast and the Quirkiest"`,
+      `Julie Andrews & Lin-Manuel Miranda tear into a theater-goer for not silencing their phone`,
+      `Two Liam Neesons kidnap each other’s daughters`,
+      `Bigfoot hunters outdoing each other's encounter stories`,
+      `Jack Nicholson’s go-to Cold Stone Creamery order`,
+      `Mark Wahlberg complains about people always asking him for rides to the airport`,
+      `Bjork’s to-do list`,
+      `The moment right before buying a fedora`,
+      `A skateboarder using a bunch of skateboarding lingo recollects his gnarliest move`,
+      `A one-star review of the Sun`,
+      `‘The Purge’ but for social taboos`,
+      `Dorothy, the Scarecrow, and Adam Driver`,
+      `An uncle taking a real shot in the dark with this birthday present`,
+      `Friends who have all been bitten by zombies try to hide it`,
+      `Jeff Bridges on all the ways he could kill you`,
+      `Olivia Colman delivers your baby`,
+      `Three Owen Wilsons in ‘Into the Owen Wilson-Verse’`,
+      `An Architectural Digest tour of Kimia’s mind`,
+      `Miley Cyrus describes the new tattoo she wants`,
+      `Will Smith apologizes for *another* Oscar incident`,
+      `Two movie trailer announcers so excited they keep interrupting each other`,
+      `An insane reaction to the barber showing you the back of your head`,
+      `Sleep paralysis in the break room`,
+      `Evil Gollum & Nice Gollum in marriage counseling`,
+      `Greta Thunberg & John Mulaney co-host a climate change telethon`,
+      `A quirky educational theater troupe gives you some tough love`,
+      `A monk shares the meaning of life after 30 years in meditation`,
+      `A YouTuber welcomes viewers while losing a lot of blood`,
+      `A macho man screaming in a haunted house`,
+      `A female chimney sweep talks about making it in a male-dominated profession`,
+      `One of those ‘Sunday Reset’ videos on TikTok`,
+      `A dog watches its owners do the nasty for the first time`,
+      `An IKEA furniture naming brainstorm`,
+      `A Q&A with the cast and director of Tennessee Williams’ ‘Teeny Tiny Little Poops’`,
+      `Be warned: This hibachi chef *will* pelt an egg at you`,
+      `A newswoman’s kink is keeping the weatherman out in a storm`,
+      `The person in the next stall wants a series of favors`,
+      `Christmas carolers who only sing experimental originals`,
+      `A dramatic monologue from Tennessee Williams’ Tony Award-winning ‘Teeny Tiny Little Pops’`,
+      `Samuel L. Jackson, 10 years older, curses every time he speaks`,
+      `A bride and groom thought it would be romantic to get married under a loud waterfall`,
+      `This Uber’s perks are insane`,
+      `Morpheus tries to explain the Matrix but Neo doesn’t get it`,
+      `A ‘Love is Blind’ contestant is secretly a horse`,
+      `The Wikipedia page of a man who has 100% edited his own Wikipedia page`,
+      `A snake oil salesman on ‘Shark Tank’`,
+      `Some ‘Lord of the Rings’ in Spanish with proper voices`,
+      `A political debate is interrupted by a seagull attack`,
+      `Atlas Fitness`,
+      `A drunk god makes Las Vegas`,
+      `Two Angelenos - who were born in LA, raised in LA, and never left LA - run into each other on the streets of LA`,
+      `Two New Yorkers are so New York we can’t understand them`,
+      `The play-by-play & color commentator for a sleep fight over a blanket`,
+      `A kid at a sleepover is clearly the principal undercover`,
+      `The priest taking your confessional might be playing a drinking game`,
+      `A scene that will be problematic in the year 3067`,
+      `Frodo & Samwise play road trip games`,
+      `Newscasters can’t turn it off at home`,
+      `Two anti-wipers’ conspiracy theory`,
+      `Centaurs who feel like they don’t belong in either culture`,
+      `A vaguely European couple with an inscrutable relationship status`,
+      `An intervention for one wheel on the shopping cart`,
+      `One lost hiker suggests cannibalism way too soon`,
+      `A lumberjack forgot his axe but insists he doesn’t need it`,
+      `Brennan’s real feelings about our loosey-goosey point system`,
+      `A clone, a clone of a clone, and a clone of a clone of a clone`,
+      `The comments section if & when this hits YouTube`,
+      `A Foley artist overdubs a scene from the movie ‘I Break All Your Bones’`,
+      `Asking for samples at ‘World’s Worst Ice Cream’`,
+      `Two clipboard people trying to get each other’s signatures`,
+      `This urinal whistling is a real bop`,
+      `Slimer tries to return a jacket to The Gap`,
+      `A boy going through puberty in 15 seconds`,
+      `Randy Newman’s theme song for ‘Toy Story 74’`,
+      `An inappropriate way to say ‘Shut up’`,
+      `A Nat 20 vs. Nat 1 charisma check`,
+      `Two grizzled sea captains compare car stories`,
+      `A chef getting ‘Ratatouille’d’ by a normal rat`,
+      `Elvish Presley`,
+      `Saint Peter on the things you did that were weird but not sins`,
+      `7 of the cutest farts you’ve ever heard`,
+      `A cool bass lick and then the rest of the band joins in`,
+      `A robot orgasm`,
+      `Spilling an entire lunch tray one item at a time`,
+      `An MTA announcement becomes self-aware`,
+      `The most annoying alarm clock`,
+      `A recording of a political speech so old, it’s unintelligible`,
+      `A dial-up modem`,
+      `Making small talk with a dentist while they work on you`,
+      `A tiny pirate shipwreck`,
+      `6 confronts 7 about eating 9`,
+      `Your parents arguing softly in the other room about you having been allowed to see an R-rated movie`,
+      `A trip down a water slide goes horribly wrong`,
+      `If roller coasters could talk`,
+      `Poseidon the lifeguard`,
+      `A rude Goldberg machine`,
+      `100 Batmans`,
+      `A vampire nauseated by drinking blood`,
+      `A Chuck-E-Cheese band at its last gasp`,
+      `A cat throwing up the Antichrist`,
+      `God meets a fanboy`,
+      `A video call with shitty WiFi`,
+      `And the nominees for silliest name of the year are...`,
+      `Two musical theater characters right before a big song is about to begin`,
+      `A knock-off Simon and Garfunkel`,
+      `Two hypnotists trying to one-up each other`,
+      `The left and right brain`,
+      `The angel and devil on Zac’s shoulders`,
+      `A dystopian city street`,
+      `Gandalf the wizard shaving his beard`,
+      `A jellyfish giving its son ‘the talk’`,
+      `Godzilla but he’s really sorry`,
+      `Heaven’s automated phone line`,
+      `A dinosaur speaks its first English`,
+      `Two dogs who are best friends greeting each other after a long time apart`,
+      `The locker room of a stressful ultimate frisbee game`,
+      `A siren phone sex line`,
+      `A Bond villain gets painful hiccups`,
+      `Two Scots that are so Scottish we can’t understand them`,
+      `The classic video game “Dad Fighter 2”`,
+      `Two zombies deciding what to have for dinner`,
+      `Tuning the radio, but every song is about you`,
+      `A creaky door that gives life advice`,
+      `The bass part in an a cappella song where there’s just not a lot of bass part`,
+      `A wereturkey`,
+      `An auctioneer’s existential crisis`,
+      `The world’s largest businessman`,
+      `The creepy twins from “The Shining” asking if they can borrow the car`,
+      `A defendant stupidly interrupting his lawyer’s closing remarks`,
+      `You’re on a date when, embarrassingly, you spring a leak and begin to deflate`,
+      `Santa fucks up the whole routine`,
+      `Cats & Dogs star in this trailer for ‘The Fast and the Furryous’`,
+      `The Tooth Fairy fucks up the whole routine`,
+      `Shakespeare’s in-flight safety video`,
+      `Predictive text Brennan`,
+      `An Amish teacher`,
+      `A 1930s noir scene in which every line is mysterious`,
+      `Your high school bully’s guided meditation`,
+      `A sexy but loud car alarm`,
+      `A celebrity's unflattering wax figure reveal`,
+      `Bitchy mourners would have done this tacky candlelight vigil differently`,
+      `A couple so annoyingly in love they can't finish the fucking story`,
+      `Professor X recruits who he thinks is a mutant but is in fact just a weird guy`,
+      `Your family pitching ideas for your little comedy skits`,
+      `Bringing the sloppiest sandwich to a friend’s intervention`,
+      `The Godfather can't believe no one brought him a little snack`,
+      `A female sci-fi character written by a male writer`,
+      `J. Robert De Niro Oppenheimer`,
+      `Judas giving a toast at the Last Supper`,
+      `Noah’s wife thinks he’s taking the ark hobby a little too far`,
+      `A ‘measured take’ on Freddy Krueger by the editorial board of The Washington Post`,
+      `This presidential acceptance speech is clearly a last-minute rewrite of their concession speech`,
+      `Both of these people are definitely wearing a wire`,
+      `Realizing an anecdote isn’t at all appropriate for the ‘Jeopardy’ intro`,
+      `Willy Wonka’s lawyer's opening statement`,
+      `A tour guide who snuck one of his own into the museum`,
+      `A father chess knight teaches its baby chess knight to take its first steps`,
+      `Rip Van Winkle explains the gap in his resume`,
+      `New Year’s Eve TV hosts are not the ‘fun’ kind of drunks`,
+      `Three soldiers bored inside the Trojan Horse`,
+      `A German sitcom where hijinks are handled swiftly and pragmatically`,
+      `The three witches’ spell uses only Trader Joe’s products`,
+      `Letters between two ‘historically close unmarried friends of the same sex’`,
+      `A divorced dad tries to get the kids excited about his new houseboat`,
+      `An intimacy coordinator for a fight scene`,
+      `This funeral home is run like a New York City deli`,
+      `A rap battle’s bars are actually good feedback you should take to heart`,
+      `An Oscar bait monologue from ‘Uno: The Movie’`,
+      `An audiobook concludes, and the other guy who’s there to say, ‘This has been...’ really goes for it`,
+      `The best and worst person to sit next to on an airplane`,
+      `What parents imagine happens to a bully when you say the ‘sticks and stones’ thing`,
+      `All of Grandpa’s stories somehow involve a guy named ‘Chorizo Joe’`,
+      `What’s in the ‘Elon Musk’ at an NYC deli`,
+      `Tonight’s DJ set: Prospector Bugaboo’s Electric Jamboree`,
+      `Problematic specific issue`,
+      `Two guys from Brooklyn's fight turned meet-cute`,
+      `Uber but on horseback`,
+      `Almost performing and then asking for clarification on this prompt 5 times`,
+      `Jacob Wysocki’s Jacob Ice Hockey`,
+      `Five laughs, each a little wealthier than the last`,
+      `Pangea announces its split on social media`,
+      `Mormon parents give you the ‘soaking’ talk`,
+      `Various messages about your free couch on Facebook Marketplace`,
+      `A ‘stages of grief’-rollercoaster`,
+      `Two very different types of drunk girl in the bar bathroom`,
+      `An open-heart surgeon with the attitude of a cool hairdresser`,
+      `Your parents narrate the menu`,
+      `Two Swifties after Taylor starts dating former Secretary of State John Kerry`,
+      `A realtor shows a house your brain invented in a dream`,
+      `A perfumer explains the smell notes in their worst fragrance`,
+      `Deeply Southern women talk shit in the nicest way possible`,
+      `Two characters who just can’t seem to pass the Bechdel Test`,
+      `The guide at George Washington’s house clearly thinks she could have hooked up with him`,
+      `A nun’s wedding vows to Jesus`,
+      `A local giving way too much information when asked for directions`,
+      `Periodic Table: The Musical`,
+      `If the courtroom witness stand were a hot tub`,
+      `If Siskel and Ebert reviewed people’s lives when they die`,
+      `Rocking on your porch at 80, recounting your time on ‘Make Some Noise’`,
+      `The Noise Boys freaky Friday’d`,
+      `Just giving up halfway through telling a story`,
+      `The guy who works at NPR’s ‘Tiny Desk’ just trying to get some work done`,
+      `The longer this speech goes on, the less clear what the occasion is`,
+      `A cutscene in a video game that’s glitching out`,
+      `When mixing friend groups doesn’t really work`,
+      `Hot Topic’s new spokesman is Tim Curry`,
+      `Trying to sneak out of your old, rickety-ass house when you accidentally knock over a porcelain vase, waking up your grandmother. We cut back-and-forth between your grandmother waking up to investigate the noise and you hurriedly putting the vase back together with superglue`,
+      `Buckingham Palace guards trying to make each other laugh`,
+      `A person zoned out in the Zoom meeting gets asked a question`,
+      `Mads Mikkelsen wins a Kids’ Choice Award`,
+      `Two Australian actors’ accents keep slipping through their American ones`,
+      `A 21-pun salute`,
+      `The Oompa Loompa song after a kid was straight-up decapitated`,
+      `The ghosts of Past, Present, and Future huddle and strategize in between visits to Scrooge`,
+      `So that’s why the McDonald’s ice cream machine is always broken`,
+      `Abraham Lin-con`,
+      `A sea shanty about struggling socially on the ship`,
+      `The foreman of The Cheesecake Factory`,
+      `An ad for a new Burger King sandwich: The King Lear`,
+      `A horny chain text message for Arbor Day`,
+      `Good cop / bad cop`,
+      `Trying to be encouraging with the teammate who has missed 82 foul shots this game`,
+      `Bob Ross teaches you how to draw insulting caricatures`,
+      `Sweeney Todd on ‘The Great British Baking Show’`,
+      `A tattoo artist who likes to punch up their clients’ ideas`,
+      `Two nerdy teens trade stepmom cards`,
+      `Black guys in a horror movie decide how they’re going to get out of this one`,
+      `Movie buffs discuss the symbolism of an accidentally left-in water bottle`,
+      `Every fucking conversation in L.A.`,
+      `C-3PO and R2-D2, with R2-D2 translated into English`,
+      `An aspiring villain grabs coffee with a supervillain in order to pick their brain`,
+      `A guy in an emergency thinks he’s on a YouTube prank show`,
+      `A ‘comedy sketch’ written by bad A.I.`,
+      `A dad at a press conference after doing the bare minimum`,
+      `A hibachi chef trying to play it cool after chopping their hand clean off`,
+      `A Jane Austen protagonist gets the ick`,
+      `Eugene from marching band only invited the hot cheerleader to the Renaissance Faire as a stupid bet`,
+      `Two inventors arrive at the patent office to register the same invention at the same time`,
+      `Ms. Frizzle drafting a field trip permission slip`,
+      `A medication ad where a character experiences the side effects as they’re read aloud`,
+      `An ant giving another ant directions through the ant farm`,
+      `Prestige Dog TV`,
+      `A bear who just went through like 250 commitments`,
+      `The COVID compliance officer’s spiel on a porn set`,
+      `Listing 50 states while trying to trip each other up`,
+      `The worst time for an alien to burst out of your chest`,
+      `An extremely vulgar rapper gives a censored performance at the Kids’ Choice Awards`,
+      `Your period the day before a tropical vacation`,
+      `Sober you discusses last night’s receipts with drunk you`,
+      `A recently divorced couple still has to do that TED Talk`,
+      `‘Speed’ but a paralegal can’t type less than 50 WPM`,
+      `A pilot is a little too excited to have to ‘pull a Sully’`,
+      `A #BoyBoss`,
+      `A haunted house terrifies actors with details about the job`,
+      `Wood cop/Ventriloquist cop`,
+      `The booking process at horny jail`,
+      `The moment this video gets demonetized on YouTube`,
+      `Five athletes, each one better than the last`,
+      `A basketball player’s far too elaborate free throw routine`,
+      `The Ugly Duckling calls their agent about the title of the book`,
+      `Agent Smoulder in the XXX-Files`,
+      `No one in book club didn’t read the book`,
+      `An obituary for someone who definitely faked their own death`,
+      `A boss confronts their employee who believes they are in a musical`,
+      `A quick survey about your experience with life so far`,
+      `A future ‘Wirecutter’ writer talks about the top three rocks they found on the playground`,
+      `Mario thinks Luigi should maybe find his own look`,
+      `Neither of these people are gonna watch the shows they’re recommending each other`,
+      `Oprah giving everyone a free giant tortoise`,
+      `The prosecution and defense in the case of Goldilocks v. Bears`,
+      `A bedridden British orphan’s dying wish is for you to read their screenplay`,
+      `A step-parent on a power trip`,
+      `A therapist can’t get past the fact their client hasn’t seen ‘Titanic’`,
+      `Two catty teens critique Josh’s performance`,
+      `Going home with someone who has a really specific voice for their pet`,
+      `An NPC’s five different reactions to you entering their shop depending on how leveled-up you are`,
+      `The one toxic person in every Improv 101 class`,
+      `The Hobbit research and development committee presents: even more meal ideas`,
+      `A ‘90s sitcom audience gives the wrong response`,
+      `Baseball hotdog vendors get into a bidding war`,
+      `A teenage manic mutant pixie ninja dream turtle girl`,
+      `Bond villain ‘Vagina Plenty’`,
+      `Two morning show hosts out-pleasant each other`,
+      `A bit of good news becomes bad news becomes good news becomes bad news`,
+      `An aide correcting the mayor-elect during their victory speech`,
+      `‘Reading a book’ and ‘watching TV’ vying for your time before bed`,
+      `Dudes who only know each other because their wives are friends`,
+      `Trying a little too hard to cry in an audition`,
+      `George R.R. Martin’s publisher asks for a ‘Winds of Winter’ status report`,
+      `If ‘The Bear’ were as intense about work-life balance`,
+      `Cruella de Vil's evil plot to find forever homes for 101 rescue puppies`,
+      `The quicksand is really sorry it’s gotta do this to you`,
+      `A driver and GPS have undeniable chemistry`,
+      `How you wish your neighbors behaved`,
+      `Accepting an Oscar while shimmying your way out of a wedgie`,
+      `Hannibal Lecter at Sweetgreen`,
+      `Life skills you still have in your 30s`,
+      `A video game character keeps switching between lore and the tutorial`,
+      `Scrooge learns the true meaning of Bisexual Awareness Week`,
+      `A mother-son wedding dance has a little too much chemistry`,
+      `Two ‘witchy’ actual witches`,
+      `A couple calls for the check but doesn’t know the hand motion`,
+      `A stock photographer asking their models for super specific scenarios`,
+      `The producers at this audition want to know if you’re open to certain things`,
+      `Two finalists at the Normal Guy Pageant`,
+      `The angel, the devil, and some guy who loves pottery on your shoulders`,
+      `The Simlish Pledge of Allegiance`,
+      `The White Power Ranger just said their name out loud for the first time`,
+      `Mr. Beastiality`,
+      `A kid whose parents got divorced`,
+      `Laying off your imaginary friend`,
+      `A kid’s birthday party clown gets heckled`,
+      `The presenters realize mid-pitch their ‘Shark Tank’ product already exists`,
+      `Ghost hunters interpret the sounds coming out of the tape recorder`,
+      `One guard always lies, and the other guard always wants to talk about their music`,
+      `We returned from Narnia but it turned one of us Republican`,
+      `That weird cellmate in the corner also joins the ‘Cell Block Tango’`,
+      `A hero already getting over the death they’re bleeding out`,
+      `Josh Ruben`,
+      `The ‘friendship’ between two ‘straight’ people who will both come out in college`,
+      `Two dads try to out-proud each other at graduation`,
+      `A driverless car flirting with a cop to get out of a ticket`,
+      `Two gamers speed-run a relationship`,
+      `Your grandmother gives us her review of this show`,
+      `A hopeless romantic is wrecked by the time they reach the airport gate`,
+      `Sampling a flight of bees`,
+      `A cop pulls over his mommy`,
+      `Friends after a movie trying to convince each other they care about the credits`,
+      `Marilyn Monroe’s even more sexually explicit ‘Happy Birthday’`,
+      `The knights of the beer pong table`,
+      `Every job interview with a nanny in a horror movie`,
+      `A scene from the British period drama ‘Nothing Ever Happens’`,
+      `Two ‘wife guys’ try to out-‘wife guy’ each other`,
+      `A judge ‘compliment sandwiches’ the defendant during sentencing`,
+      `Two dog agility show announcers cover the worst go in history`,
+      `A portrait painter poses a model so they don’t have to paint the ‘hard parts’`,
+      `Just an honest-to-goodness attempt at reciting the Gettysburg Address`,
+      `A man with the longest Powerball ticket of all time gets more and more excited as the numbers are read aloud`,
+      `A grizzled detective’s flashback to happier days with his then-alive wife`,
+      `A matchmaker breaks the news that their client is unmatchable`,
+      `An election group chair tries to rally enthusiasm`,
+      `Hurriedly dropping your horror movie child off at daycare`,
+      `Our three players all attempt to ‘straight man’ each other`,
+      `Three blurbs on the back of the book ‘How to Write a Book Blurb’`,
+      `A business cat is distracted by their own laser pointer`,
+      `Two teens and the ghost controlling their Ouija board`,
+      `A helicopter rescue for hikers who are simply over it`,
+      `Hungry Hungry Hippos Anonymous`,
+      `Three people getting stuck in a waterslide one-by-one`,
+      `Shirley Temple is absolutely serious about her rider`,
+      `Two people who need to poop try to politely speed up the conversation`,
+      `The reunion of two high school friends whose M.A.S.H.’s came true`,
+      `This dream is too messed up even for Freddy Krueger`,
+      `The early bird is a real dick about it`,
+      `A siren who refuses to admit she’s past her sailor-luring days`,
+      `Hiding your disappointment that someone didn’t get Thanos snapped`,
+      `A TSA agent goes through a magician’s luggage`,
+      `This guy thought getting pegged meant something else entirely`,
+      `A pirate eats a throat lozenge for the first time`,
+      `A boyfriend won’t admit he’s invested in this ‘Housewives’ storyline`,
+      `An Oscar bait monologue with a bit of branded content in it`
+    ];
+
+    const promptListEl = document.getElementById("promptList");
+    const currentPromptEl = document.getElementById("currentPrompt");
+    const usedTagEl = document.getElementById("usedTag");
+    const searchInputEl = document.getElementById("searchInput");
+    const hideUsedCheckbox = document.getElementById("hideUsedCheckbox");
+    const emptyStateEl = document.getElementById("emptyState");
+    const toastEl = document.getElementById("toast");
+    const toastTextEl = document.getElementById("toastText");
+    const copyBtn = document.getElementById("copyBtn");
+    const markUsedBtn = document.getElementById("markUsedBtn");
+    const resetUsedBtn = document.getElementById("resetUsedBtn");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const promptCountEl = document.getElementById("promptCount");
+    const usedCountEl = document.getElementById("usedCount");
+    const remainingCountEl = document.getElementById("remainingCount");
+    const mainEl = document.querySelector("main");
+    const toggleLibraryBtn = document.getElementById("toggleLibraryBtn");
+    const libraryPanel = document.getElementById("libraryPanel");
+    const libraryBody = document.getElementById("libraryBody");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const startSurpriseBtn = document.getElementById("startSurpriseBtn");
+    const surpriseInlineBtn = document.getElementById("surpriseInlineBtn");
+    const startPromptOverlay = document.getElementById("startPromptOverlay");
+    const promptActions = document.getElementById("promptActions");
+    const libraryStats = document.getElementById("libraryStats");
+
+    let filteredIndices = PROMPTS.map((_, idx) => idx);
+    let currentIndex = null;
+    let usedSet = new Set();
+    let libraryOpen = false;
+    let hasStarted = false;
+
+    const STORAGE_KEY = "improvPromptUsedIndices_v1";
+
+    function loadUsed() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) {
+          usedSet = new Set(arr.filter((i) => Number.isInteger(i) && i >= 0 && i < PROMPTS.length));
+        }
+      } catch (e) {
+        console.warn("Could not load used prompts", e);
+      }
+    }
+
+    function saveUsed() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(usedSet)));
+      } catch (e) {
+        console.warn("Could not save used prompts", e);
+      }
+    }
+
+    function showToast(message) {
+      toastTextEl.textContent = message;
+      toastEl.classList.add("show");
+      setTimeout(() => toastEl.classList.remove("show"), 2200);
+    }
+
+    function updateStats() {
+      const usedCount = usedSet.size;
+      const remaining = PROMPTS.length - usedCount;
+      promptCountEl.textContent = PROMPTS.length;
+      usedCountEl.textContent = usedCount;
+      remainingCountEl.textContent = remaining >= 0 ? remaining : 0;
+    }
+
+    function setLibraryOpen(open, opts = {}) {
+      libraryOpen = open;
+      if (libraryPanel) {
+        libraryPanel.classList.toggle("collapsed", !open);
+        libraryPanel.setAttribute("aria-hidden", open ? "false" : "true");
+      }
+      if (toggleLibraryBtn) {
+        toggleLibraryBtn.setAttribute("aria-expanded", String(open));
+        toggleLibraryBtn.textContent = open ? "Hide Prompt List" : "Show Prompt List";
+      }
+      if (mainEl) {
+        mainEl.classList.toggle("library-hidden", !open);
+      }
+      if (libraryStats) {
+        libraryStats.style.display = open ? "flex" : "none";
+      }
+      if (resetUsedBtn) {
+        resetUsedBtn.style.display = open ? "inline-flex" : "none";
+      }
+      if (open && opts.focusSearch && searchInputEl) {
+        searchInputEl.focus();
+      }
+    }
+
+    function updateFullscreenLabel() {
+      if (fullscreenBtn) {
+        fullscreenBtn.textContent = document.fullscreenElement
+          ? "Exit Fullscreen"
+          : "Fullscreen";
+      }
+    }
+
+    async function toggleFullscreen() {
+      if (!document.fullscreenEnabled) {
+        showToast("Fullscreen isn't available here");
+        return;
+      }
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (e) {
+        showToast("Couldn't toggle fullscreen");
+      }
+    }
+
+    function getFilteredIndices() {
+      const query = searchInputEl.value.trim().toLowerCase();
+      const hideUsed = hideUsedCheckbox.checked;
+      const results = [];
+      PROMPTS.forEach((prompt, idx) => {
+        if (hideUsed && usedSet.has(idx)) return;
+        if (!query) {
+          results.push(idx);
+        } else {
+          if (prompt.toLowerCase().includes(query)) {
+            results.push(idx);
+          }
+        }
+      });
+      return results;
+    }
+
+    function renderList() {
+      filteredIndices = getFilteredIndices();
+      promptListEl.innerHTML = "";
+      if (filteredIndices.length === 0) {
+        emptyStateEl.style.display = "block";
+        return;
+      } else {
+        emptyStateEl.style.display = "none";
+      }
+
+      const frag = document.createDocumentFragment();
+      filteredIndices.forEach((idx) => {
+        const li = document.createElement("li");
+        li.className = "prompt-item";
+        li.dataset.index = idx;
+
+        if (idx === currentIndex) {
+          li.classList.add("active");
+        }
+
+        const indexSpan = document.createElement("span");
+        indexSpan.className = "prompt-item-index";
+        indexSpan.textContent = idx + 1;
+
+        const textWrapper = document.createElement("div");
+        textWrapper.className = "prompt-item-text";
+        textWrapper.textContent = PROMPTS[idx];
+
+        const metaRow = document.createElement("div");
+        metaRow.className = "prompt-item-meta";
+
+        if (usedSet.has(idx)) {
+          const usedBadge = document.createElement("span");
+          usedBadge.className = "prompt-item-used";
+          usedBadge.textContent = "Used";
+          metaRow.appendChild(usedBadge);
+        }
+
+        if (metaRow.children.length > 0) {
+          textWrapper.appendChild(metaRow);
+        }
+
+        li.appendChild(indexSpan);
+        li.appendChild(textWrapper);
+
+        li.addEventListener("click", () => {
+          setCurrentPrompt(idx, { fromClick: true });
+        });
+
+        frag.appendChild(li);
+      });
+
+      promptListEl.appendChild(frag);
+    }
+
+    function setCurrentPrompt(idx, opts = {}) {
+      if (idx == null || idx < 0 || idx >= PROMPTS.length) return;
+      hasStarted = true;
+      currentIndex = idx;
+      currentPromptEl.textContent = PROMPTS[idx];
+      usedTagEl.style.display = usedSet.has(idx) ? "inline-flex" : "none";
+      if (startPromptOverlay) startPromptOverlay.style.display = "none";
+      if (promptActions) promptActions.style.display = "flex";
+      if (surpriseInlineBtn) surpriseInlineBtn.focus({ preventScroll: true });
+
+      document.querySelectorAll(".prompt-item").forEach((li) => {
+        if (Number(li.dataset.index) === idx) li.classList.add("active");
+        else li.classList.remove("active");
+      });
+
+      if (opts.scrollIntoView) {
+        const active = document.querySelector(`.prompt-item[data-index="${idx}"]`);
+        if (active) {
+          active.scrollIntoView({ block: "center", behavior: "smooth" });
+        }
+      }
+
+      if (opts.fromClick) {
+        // tiny flair
+        currentPromptEl.style.opacity = "0.75";
+        setTimeout(() => {
+          currentPromptEl.style.opacity = "1";
+        }, 80);
+      }
+    }
+
+    function randomFromArray(arr) {
+      if (!arr || arr.length === 0) return null;
+      const i = Math.floor(Math.random() * arr.length);
+      return arr[i];
+    }
+
+    function pickRandomPrompt() {
+      const candidates = getFilteredIndices();
+      if (candidates.length === 0) {
+        if (hideUsedCheckbox.checked && usedSet.size === PROMPTS.length) {
+          showToast("All prompts used! Resetting used list.");
+          usedSet.clear();
+          saveUsed();
+          updateStats();
+          renderList();
+          return;
+        }
+        showToast("No prompts match that search. Try clearing it.");
+        return;
+      }
+
+      let pool = candidates;
+      const hideUsed = hideUsedCheckbox.checked;
+
+      if (!hideUsed) {
+        const notCurrent = candidates.filter((idx) => idx !== currentIndex);
+        if (notCurrent.length > 0) pool = notCurrent;
+      }
+
+      const idx = randomFromArray(pool);
+      if (idx == null) return;
+      setCurrentPrompt(idx, { scrollIntoView: true });
+    }
+
+    function copyCurrentPrompt() {
+      if (currentIndex == null) {
+        showToast("No prompt selected yet!");
+        return;
+      }
+      const text = PROMPTS[currentIndex];
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => showToast("Prompt copied to clipboard"))
+          .catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        document.execCommand("copy");
+        showToast("Prompt copied to clipboard");
+      } catch (e) {
+        showToast("Could not copy (you’ll have to do it manually)");
+      }
+      document.body.removeChild(area);
+    }
+
+    function markCurrentAsUsed() {
+      if (currentIndex == null) {
+        showToast("Pick a prompt first!");
+        return;
+      }
+      if (usedSet.has(currentIndex)) {
+        usedSet.delete(currentIndex);
+        showToast("Marked as unused");
+      } else {
+        usedSet.add(currentIndex);
+        showToast("Marked as used");
+      }
+      saveUsed();
+      updateStats();
+      renderList();
+      setCurrentPrompt(currentIndex);
+    }
+
+    function resetUsed() {
+      if (usedSet.size === 0) {
+        showToast("No used prompts to reset");
+        return;
+      }
+      usedSet.clear();
+      saveUsed();
+      updateStats();
+      renderList();
+      setCurrentPrompt(currentIndex || 0);
+      showToast("Used markers cleared for this device");
+    }
+
+    function init() {
+      loadUsed();
+      updateStats();
+      renderList();
+      setLibraryOpen(false);
+      updateFullscreenLabel();
+
+      promptCountEl.textContent = PROMPTS.length;
+      if (startSurpriseBtn) {
+        startSurpriseBtn.addEventListener("click", pickRandomPrompt);
+      }
+      if (surpriseInlineBtn) {
+        surpriseInlineBtn.addEventListener("click", pickRandomPrompt);
+      }
+
+      copyBtn.addEventListener("click", copyCurrentPrompt);
+      markUsedBtn.addEventListener("click", markCurrentAsUsed);
+      resetUsedBtn.addEventListener("click", resetUsed);
+      if (toggleLibraryBtn) {
+        toggleLibraryBtn.addEventListener("click", () => {
+          setLibraryOpen(!libraryOpen, { focusSearch: !libraryOpen });
+        });
+      }
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
+      }
+      clearSearchBtn.addEventListener("click", () => {
+        searchInputEl.value = "";
+        searchInputEl.focus();
+        renderList();
+      });
+
+      searchInputEl.addEventListener("input", () => {
+        renderList();
+      });
+
+      searchInputEl.addEventListener("focus", () => {
+        if (!libraryOpen) setLibraryOpen(true);
+      });
+
+      searchInputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const results = getFilteredIndices();
+          if (results.length === 0) {
+            showToast("No matches for that search");
+            return;
+          }
+          const idx = randomFromArray(results);
+          setCurrentPrompt(idx, { scrollIntoView: true });
+        }
+      });
+
+      hideUsedCheckbox.addEventListener("change", () => {
+        renderList();
+      });
+
+      document.addEventListener("fullscreenchange", updateFullscreenLabel);
+
+      document.addEventListener("keydown", (e) => {
+        const active = document.activeElement;
+        const typingInInput =
+          active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
+
+        if (!typingInInput && e.code === "Space") {
+          e.preventDefault();
+          pickRandomPrompt();
+        } else if (!typingInInput && (e.key === "l" || e.key === "L")) {
+          setLibraryOpen(!libraryOpen);
+        } else if (!typingInInput && (e.key === "f" || e.key === "F")) {
+          toggleFullscreen();
+        } else if (e.key === "Escape") {
+          if (searchInputEl.value) {
+            searchInputEl.value = "";
+            renderList();
+          }
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
