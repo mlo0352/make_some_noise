@@ -657,6 +657,30 @@
       position: relative;
     }
 
+    .score-link {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #c3c0b8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: none;
+      font-size: 0.9rem;
+    }
+
+    .score-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #f7f5f0;
+    }
+
     .used-check {
       position: absolute;
       top: 14px;
@@ -829,6 +853,39 @@
       }
     }
 
+    .alt-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .alt-title {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .alt-note {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .alt-note a {
+      color: #ffb347;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .alt-note a:hover {
+      text-decoration: underline;
+    }
+
     .toast {
       background: #0f0f0f;
       color: #ffffff;
@@ -852,7 +909,7 @@
   <div class="app-shell">
     <header>
       <div class="title-block">
-        <h1>
+        <h1 id="titleText">
           Make Some Noise
         </h1>
         <div class="top-controls">
@@ -872,6 +929,7 @@
     <main>
       <section class="card prompt-card">
         <div class="card-inner">
+          <a id="scoreLink" class="score-link" href="#" target="_blank" rel="noreferrer noopener" style="display:none;"></a>
           <div class="used-check" id="usedCheck">✓</div>
           <div class="current-prompt-text" id="currentPrompt"></div>
           <div id="startPromptOverlay">
@@ -885,6 +943,13 @@
           </div>
         </div>
       </section>
+
+      <div class="alt-actions">
+        <div class="alt-title">Other Improv Games</div>
+        <button id="sfahBtn" class="ghost small">Scenes From A Hat</button>
+        <button id="backToNoiseBtn" class="ghost small" style="display:none;">Back to Make Some Noise</button>
+      </div>
+      <div class="alt-note" id="sfahNote" style="display:none;">Prompts sourced from <a href="https://old.reddit.com/r/ScenesFromAHat/" target="_blank" rel="noreferrer noopener">r/ScenesFromAHat</a></div>
 
       <section id="libraryPanel" class="card library-panel collapsed">
         <div class="card-inner">
@@ -1690,6 +1755,10 @@
     const copyBtn = document.getElementById("copyBtn");
     const markUsedBtn = document.getElementById("markUsedBtn");
     const resetPromptBtn = document.getElementById("resetPromptBtn");
+    const sfahBtn = document.getElementById("sfahBtn");
+    const backToNoiseBtn = document.getElementById("backToNoiseBtn");
+    const scoreLinkEl = document.getElementById("scoreLink");
+    const sfahNote = document.getElementById("sfahNote");
     const resetUsedBtn = document.getElementById("resetUsedBtn");
     const clearSearchBtn = document.getElementById("clearSearchBtn");
     const promptCountEl = document.getElementById("promptCount");
@@ -1705,21 +1774,46 @@
     const promptActions = document.getElementById("promptActions");
     const libraryStats = document.getElementById("libraryStats");
 
-    let filteredIndices = PROMPTS.map((_, idx) => idx);
+    let filteredIndices = [];
     let currentIndex = null;
-    let usedSet = new Set();
     let libraryOpen = false;
     let hasStarted = false;
+    const SFAH_FALLBACK = [
+      {
+        title: "Confusing Additions to the Justice League",
+        score: 5,
+        permalink: "https://www.reddit.com/r/ScenesFromAHat/comments/1nkjkix/confusing_additions_to_the_justice_league/",
+      },
+      {
+        title: "If famous comedies had sad endings",
+        score: 12,
+        permalink: "https://www.reddit.com/r/ScenesFromAHat/comments/1nk4c29/sfah_if_famous_comedies_had_sad_endings/",
+      },
+    ];
 
-    const STORAGE_KEY = "improvPromptUsedIndices_v1";
+    let sfahTitles = [];
+    let sfahLastFetched = 0;
+    let sfahLocal = [];
+    let currentMode = "noise";
+    const usedSets = {
+      noise: new Set(),
+      sfah: new Set(),
+    };
+
+    const STORAGE_KEY = "improvPromptUsedIndices_v2";
 
     function loadUsed() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
-        const arr = JSON.parse(raw);
-        if (Array.isArray(arr)) {
-          usedSet = new Set(arr.filter((i) => Number.isInteger(i) && i >= 0 && i < PROMPTS.length));
+        const obj = JSON.parse(raw);
+        if (obj && typeof obj === "object") {
+          if (Array.isArray(obj.noise)) {
+            usedSets.noise = new Set(obj.noise.filter((i) => Number.isInteger(i) && i >= 0));
+          }
+          if (Array.isArray(obj.sfah)) {
+            usedSets.sfah = new Set(obj.sfah.filter((i) => Number.isInteger(i) && i >= 0));
+          }
         }
       } catch (e) {
         console.warn("Could not load used prompts", e);
@@ -1728,7 +1822,13 @@
 
     function saveUsed() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(usedSet)));
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            noise: Array.from(usedSets.noise),
+            sfah: Array.from(usedSets.sfah),
+          })
+        );
       } catch (e) {
         console.warn("Could not save used prompts", e);
       }
@@ -1740,10 +1840,51 @@
       setTimeout(() => toastEl.classList.remove("show"), 2200);
     }
 
+    function setPromptContent(text, { used = false, score = null, permalink = null } = {}) {
+      hasStarted = true;
+      currentPromptEl.textContent = text;
+      usedCheckEl.style.display = used ? "flex" : "none";
+      if (score != null) {
+        scoreLinkEl.style.display = "inline-flex";
+        scoreLinkEl.textContent = `${score}`;
+        if (permalink) {
+          scoreLinkEl.href = permalink;
+        } else {
+          scoreLinkEl.removeAttribute("href");
+        }
+      } else {
+        scoreLinkEl.style.display = "none";
+        scoreLinkEl.removeAttribute("href");
+      }
+      if (startPromptOverlay) startPromptOverlay.style.display = "none";
+      if (promptActions) promptActions.style.display = "flex";
+      if (copyBtn) copyBtn.disabled = false;
+    }
+
+    function getUsedSet() {
+      return usedSets[currentMode] || usedSets.noise;
+    }
+
+    function getPromptsArray() {
+      if (currentMode === "sfah") return sfahLocal;
+      return PROMPTS;
+    }
+
+    function pruneUsedForCurrent() {
+      const arrLength = getPromptsArray().length;
+      const used = getUsedSet();
+      Array.from(used).forEach((idx) => {
+        if (idx < 0 || idx >= arrLength) {
+          used.delete(idx);
+        }
+      });
+    }
+
     function updateStats() {
-      const usedCount = usedSet.size;
-      const remaining = PROMPTS.length - usedCount;
-      promptCountEl.textContent = PROMPTS.length;
+      const promptsArr = getPromptsArray();
+      const usedCount = getUsedSet().size;
+      const remaining = promptsArr.length - usedCount;
+      promptCountEl.textContent = promptsArr.length;
       usedCountEl.textContent = usedCount;
       remainingCountEl.textContent = remaining >= 0 ? remaining : 0;
     }
@@ -1797,12 +1938,15 @@
       const query = searchInputEl.value.trim().toLowerCase();
       const hideUsed = hideUsedCheckbox.checked;
       const results = [];
-      PROMPTS.forEach((prompt, idx) => {
-        if (hideUsed && usedSet.has(idx)) return;
+      const promptsArr = getPromptsArray();
+      const used = getUsedSet();
+      promptsArr.forEach((prompt, idx) => {
+        if (hideUsed && used.has(idx)) return;
+        const text = typeof prompt === "string" ? prompt : (prompt && prompt.title) || "";
         if (!query) {
           results.push(idx);
         } else {
-          if (prompt.toLowerCase().includes(query)) {
+          if (text.toLowerCase().includes(query)) {
             results.push(idx);
           }
         }
@@ -1821,6 +1965,8 @@
       }
 
       const frag = document.createDocumentFragment();
+      const promptsArr = getPromptsArray();
+      const used = getUsedSet();
       filteredIndices.forEach((idx) => {
         const li = document.createElement("li");
         li.className = "prompt-item";
@@ -1836,12 +1982,14 @@
 
         const textWrapper = document.createElement("div");
         textWrapper.className = "prompt-item-text";
-        textWrapper.textContent = PROMPTS[idx];
+        const prompt = promptsArr[idx];
+        const promptText = typeof prompt === "string" ? prompt : (prompt && prompt.title) || "";
+        textWrapper.textContent = promptText;
 
         const metaRow = document.createElement("div");
         metaRow.className = "prompt-item-meta";
 
-        if (usedSet.has(idx)) {
+        if (used.has(idx)) {
           const usedBadge = document.createElement("span");
           usedBadge.className = "prompt-item-used";
           usedBadge.textContent = "Used";
@@ -1866,13 +2014,13 @@
     }
 
     function setCurrentPrompt(idx, opts = {}) {
-      if (idx == null || idx < 0 || idx >= PROMPTS.length) return;
-      hasStarted = true;
+      if (idx == null || idx < 0 || idx >= getPromptsArray().length) return;
       currentIndex = idx;
-      currentPromptEl.textContent = PROMPTS[idx];
-      usedCheckEl.style.display = usedSet.has(idx) ? "flex" : "none";
-      if (startPromptOverlay) startPromptOverlay.style.display = "none";
-      if (promptActions) promptActions.style.display = "flex";
+      const prompt = getPromptsArray()[idx];
+      const promptText = typeof prompt === "string" ? prompt : (prompt && prompt.title) || "";
+      const score = prompt && typeof prompt === "object" ? prompt.score : null;
+      const permalink = prompt && typeof prompt === "object" ? prompt.permalink : null;
+      setPromptContent(promptText, { used: getUsedSet().has(idx), score, permalink });
       if (surpriseInlineBtn) surpriseInlineBtn.focus({ preventScroll: true });
       if (copyBtn) copyBtn.disabled = false;
 
@@ -1912,10 +2060,107 @@
       return arr[i];
     }
 
+    async function loadSFAHLocal() {
+      if (sfahLocal.length > 0) return sfahLocal;
+      try {
+        const res = await fetch("./scenes_from_a_hat_prompts.json", { cache: "no-store" });
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          sfahLocal = data;
+        }
+      } catch (e) {
+        console.warn("Could not load local SFAH prompts", e);
+      }
+      if (sfahLocal.length === 0) {
+        showToast("Using sample SFAH prompts; host to load full list.");
+        sfahLocal = SFAH_FALLBACK;
+      }
+      return sfahLocal;
+    }
+
+    async function fetchSFAHTitles() {
+      const now = Date.now();
+      if (sfahTitles.length > 0 && now - sfahLastFetched < 5 * 60 * 1000) {
+        return sfahTitles;
+      }
+      try {
+        const res = await fetch("https://old.reddit.com/r/ScenesFromAHat/", {
+          headers: { "User-Agent": "Mozilla/5.0" },
+        });
+        const html = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const anchors = Array.from(doc.querySelectorAll("a.title"));
+        const titles = anchors
+          .map((a) => (a.textContent || "").trim())
+          .filter(Boolean)
+          .map((t) => t.replace(/^\\s*sfah\\s*:\\s*/i, "").trim());
+        if (titles.length === 0) throw new Error("No titles found");
+        sfahTitles = titles;
+        sfahLastFetched = now;
+        return titles;
+      } catch (e) {
+        console.warn("SFAH fetch failed", e);
+        return [];
+      }
+    }
+
+    async function pickSFAHPrompt() {
+      setLibraryOpen(false);
+      const local = await loadSFAHLocal();
+      let prompt = null;
+      if (local && local.length > 0) {
+        prompt = randomFromArray(local);
+      }
+      if (!prompt) {
+        const titles = await fetchSFAHTitles();
+        if (!titles || titles.length === 0) {
+          showToast("No SFAH prompts available right now.");
+          return;
+        }
+        prompt = { title: randomFromArray(titles), score: null, permalink: null };
+      }
+      if (!prompt) return;
+      currentIndex = null;
+      setPromptContent(prompt.title, { used: false, score: prompt.score, permalink: prompt.permalink });
+    }
+
+    async function handleModeSwitch(mode) {
+      if (mode === currentMode) {
+        if (mode === "sfah") {
+          await pickSFAHPrompt();
+        } else {
+          resetPromptView();
+        }
+        return;
+      }
+      if (mode === "sfah") {
+        await loadSFAHLocal();
+      }
+      currentMode = mode;
+      resetPromptView();
+      pruneUsedForCurrent();
+      renderList();
+      updateStats();
+      const titleEl = document.getElementById("titleText");
+      if (titleEl) titleEl.textContent = mode === "sfah" ? "Scenes From A Hat" : "Make Some Noise";
+      if (mode === "sfah") {
+        sfahBtn.style.display = "none";
+        backToNoiseBtn.style.display = "inline-flex";
+        if (sfahNote) sfahNote.style.display = "block";
+      } else {
+        sfahBtn.style.display = "inline-flex";
+        backToNoiseBtn.style.display = "none";
+        if (sfahNote) sfahNote.style.display = "none";
+      }
+  }
+
     function pickRandomPrompt() {
       const candidates = getFilteredIndices();
       if (candidates.length === 0) {
-        if (hideUsedCheckbox.checked && usedSet.size === PROMPTS.length) {
+        const promptsArr = getPromptsArray();
+        const usedSet = getUsedSet();
+        if (hideUsedCheckbox.checked && usedSet.size === promptsArr.length) {
           showToast("All prompts used! Resetting used list.");
           usedSet.clear();
           saveUsed();
@@ -1930,10 +2175,10 @@
       let pool = candidates;
       const hideUsed = hideUsedCheckbox.checked;
 
-      if (!hideUsed) {
-        const notCurrent = candidates.filter((idx) => idx !== currentIndex);
-        if (notCurrent.length > 0) pool = notCurrent;
-      }
+        if (!hideUsed) {
+          const notCurrent = candidates.filter((idx) => idx !== currentIndex);
+          if (notCurrent.length > 0) pool = notCurrent;
+        }
 
       const idx = randomFromArray(pool);
       if (idx == null) return;
@@ -1941,11 +2186,11 @@
     }
 
     function copyCurrentPrompt() {
-      if (currentIndex == null) {
+      const text = (currentPromptEl.textContent || "").trim();
+      if (!text) {
         showToast("No prompt selected yet!");
         return;
       }
-      const text = PROMPTS[currentIndex];
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard
           .writeText(text)
@@ -1977,6 +2222,7 @@
         showToast("Pick a prompt first!");
         return;
       }
+      const usedSet = getUsedSet();
       if (usedSet.has(currentIndex)) {
         usedSet.delete(currentIndex);
         showToast("Marked as unused");
@@ -1991,6 +2237,7 @@
     }
 
     function resetUsed() {
+      const usedSet = getUsedSet();
       if (usedSet.size === 0) {
         showToast("No used prompts to reset");
         return;
@@ -1999,7 +2246,7 @@
       saveUsed();
       updateStats();
       renderList();
-      setCurrentPrompt(currentIndex || 0);
+      if (currentIndex != null) setCurrentPrompt(currentIndex);
       showToast("Used markers cleared for this device");
     }
 
@@ -2007,6 +2254,8 @@
       currentIndex = null;
       currentPromptEl.textContent = "";
       usedCheckEl.style.display = "none";
+      scoreLinkEl.style.display = "none";
+      scoreLinkEl.removeAttribute("href");
       if (promptActions) promptActions.style.display = "none";
       if (startPromptOverlay) startPromptOverlay.style.display = "flex";
       copyBtn.disabled = true;
@@ -2014,6 +2263,7 @@
 
     function init() {
       loadUsed();
+      pruneUsedForCurrent();
       updateStats();
       renderList();
       setLibraryOpen(false);
@@ -2034,6 +2284,12 @@
       copyBtn.addEventListener("click", copyCurrentPrompt);
       markUsedBtn.addEventListener("click", markCurrentAsUsed);
       resetUsedBtn.addEventListener("click", resetUsed);
+      if (sfahBtn) {
+        sfahBtn.addEventListener("click", () => handleModeSwitch("sfah"));
+      }
+      if (backToNoiseBtn) {
+        backToNoiseBtn.addEventListener("click", () => handleModeSwitch("noise"));
+      }
       if (toggleLibraryBtn) {
         toggleLibraryBtn.addEventListener("click", () => {
           setLibraryOpen(!libraryOpen, { focusSearch: !libraryOpen });
@@ -2088,10 +2344,10 @@
         } else if (!typingInInput && (e.key === "f" || e.key === "F")) {
           toggleFullscreen();
         } else if (e.key === "Escape") {
-          if (searchInputEl.value) {
-            searchInputEl.value = "";
-            renderList();
-          }
+      if (searchInputEl.value) {
+        searchInputEl.value = "";
+        renderList();
+      }
         }
       });
     }
