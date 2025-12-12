@@ -903,6 +903,28 @@
       border: 1px solid rgba(0, 0, 0, 0.14);
       color: #0f0f0f;
     }
+
+    @media (max-width: 720px) {
+      footer .hint-keys:first-child {
+        display: none;
+      }
+
+      .current-prompt-text {
+        padding-top: 32px;
+      }
+
+      .used-check {
+        top: 6px;
+        right: 6px;
+        transform: translate(25%, -25%);
+      }
+
+      .score-link {
+        top: 6px;
+        left: 6px;
+        transform: translate(-25%, -25%);
+      }
+    }
   </style>
 </head>
 <body>
@@ -944,12 +966,12 @@
         </div>
       </section>
 
+      <div class="alt-note" id="sfahNote" style="display:none;">Prompts sourced from <a href="https://old.reddit.com/r/ScenesFromAHat/" target="_blank" rel="noreferrer noopener">r/ScenesFromAHat</a></div>
       <div class="alt-actions">
         <div class="alt-title">Other Improv Games</div>
         <button id="sfahBtn" class="ghost small">Scenes From A Hat</button>
         <button id="backToNoiseBtn" class="ghost small" style="display:none;">Back to Make Some Noise</button>
       </div>
-      <div class="alt-note" id="sfahNote" style="display:none;">Prompts sourced from <a href="https://old.reddit.com/r/ScenesFromAHat/" target="_blank" rel="noreferrer noopener">r/ScenesFromAHat</a></div>
 
       <section id="libraryPanel" class="card library-panel collapsed">
         <div class="card-inner">
